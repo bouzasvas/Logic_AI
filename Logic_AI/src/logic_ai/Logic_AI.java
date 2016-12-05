@@ -5,6 +5,8 @@
  */
 package logic_ai;
 
+import FileIO.ReadFile;
+import java.util.List;
 /**
  *
  * @author Tassias
@@ -16,6 +18,12 @@ public class Logic_AI {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        List l = ReadFile.CNFReadFile("test.txt");
+        
+        for (int index = 0; index < l.size(); index++) {
+            CNFSubClause c = (CNFSubClause) l.get(index);
+            c.print();
+        }
     }
     
 }
