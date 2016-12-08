@@ -1,4 +1,4 @@
-package logic_ai;
+package CNF_Resolution;
 
 import java.util.Vector;
 

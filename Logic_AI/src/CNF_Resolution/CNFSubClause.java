@@ -1,6 +1,7 @@
-package logic_ai;
+package CNF_Resolution;
 
-import logic_ai.Literal;
+import Logic_AI.Literal;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Vector;

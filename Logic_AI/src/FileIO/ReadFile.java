@@ -1,14 +1,13 @@
 package FileIO;
 
-import logic_ai.CNFSubClause;
+import CNF_Resolution.*;
+import Horn_ForwardChaining.*;
+import Logic_AI.*;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import logic_ai.Literal;
 
 /**
  *
@@ -41,12 +40,11 @@ public class ReadFile {
         }
     }
 
-    public static List CNFReadFile(String filename) {
+    public static CNFClause CNFReadFile(String filename) {
         initBuffer(filename);
-        
-        List subClauses = new ArrayList<CNFSubClause>();
 
         CNFSubClause cnf;
+        CNFClause KB = new CNFClause();
 
         try {
             String line;
@@ -69,7 +67,7 @@ public class ReadFile {
                             cnf.getLiterals().add(new Literal(orStr, false));
                         }
                     }
-                    subClauses.add(cnf);
+                    KB.getSubclauses().add(cnf);
                 }
             }
 
@@ -79,7 +77,63 @@ public class ReadFile {
         }
 
         closeFile();
-        
-        return subClauses;
+
+        return KB;
+    }
+
+    public static HornClause HornForwardChaining(String filename) {
+        initBuffer(filename);
+
+        String line;
+        HornClause horn = new HornClause();
+
+        try {
+            while ((line = reader.readLine()) != null) {
+                HornSubClause hornSub = null;
+                Literal literal;
+                String[] hornParts = line.split("=>");
+
+                if (hornParts.length == 1) {
+                    if (hornParts[0].startsWith("~")) {
+                        literal = new Literal(hornParts[0], true);
+                    } else {
+                        literal = new Literal(hornParts[0], false);
+                    }
+                    hornSub = new HornSubClause(null, literal);
+                } else {
+                    hornSub = new HornSubClause();
+
+                    String[] leftPart = hornParts[0].split("\\^");
+
+                    for (String l : leftPart) {
+                        if (l.startsWith("~")) {
+                            literal = new Literal(l, true);
+                        } else {
+                            literal = new Literal(l, false);
+                        }
+                        hornSub.addArrLiteral(literal);
+                    }
+
+                    String rightPart = hornParts[1];
+
+                    if (rightPart.startsWith("~")) {
+                        literal = new Literal(rightPart, true);
+                    } else {
+                        literal = new Literal(rightPart, false);
+                    }
+                    hornSub.setInference(literal);
+                    hornSub.calculateCount();
+                }
+
+                horn.addHornSubClause(hornSub);
+            }
+        } catch (IOException ex) {
+            System.err.println("Could not read the next line of file: "+ file.getAbsolutePath());
+            System.err.println(ex.getMessage());
+        }
+
+        closeFile();
+
+        return horn;
     }
 }
