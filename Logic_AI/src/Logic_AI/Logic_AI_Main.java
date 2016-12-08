@@ -62,6 +62,8 @@ public class Logic_AI_Main {
         
         System.out.println("***Performing CNF Resolution Algorithm...***\n");
         CNFMain cnf = new CNFMain(KB, a);
+        
+        //Always TRUE? FIX!!
         cnf.PL_Resolution(false);
         
         System.out.println();
