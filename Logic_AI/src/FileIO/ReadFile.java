@@ -49,6 +49,11 @@ public class ReadFile {
         try {
             String line;
             while ((line = reader.readLine()) != null) {
+                
+                //Commented Lines
+                if (line.startsWith("#"))
+                    continue;
+                
                 String[] andSubClause = line.split("\\^");
 
                 for (String andStr : andSubClause) {
@@ -89,6 +94,11 @@ public class ReadFile {
 
         try {
             while ((line = reader.readLine()) != null) {
+                
+                //Commented Lines
+                if (line.startsWith("#"))
+                    continue;
+                
                 HornSubClause hornSub = null;
                 Literal literal;
                 String[] hornParts = line.split("=>");
