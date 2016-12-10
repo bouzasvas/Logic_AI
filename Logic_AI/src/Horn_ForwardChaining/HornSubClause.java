@@ -17,8 +17,6 @@ public class HornSubClause {
     private ArrayList<Literal> clause;
     private Literal inferrence;
     private int count;
-    
-    private boolean isInferred;
 
     public HornSubClause() {
         this.clause = new ArrayList<Literal>();
@@ -36,7 +34,7 @@ public class HornSubClause {
     public void addArrLiteral(Literal literal) {
         this.clause.add(literal);
     }
-    
+
     public ArrayList<Literal> getClause() {
         return this.clause;
     }
@@ -44,17 +42,9 @@ public class HornSubClause {
     public void setInference(Literal literal) {
         this.inferrence = new Literal(literal.getName(), literal.getNeg());
     }
-    
+
     public Literal getInferrence() {
         return this.inferrence;
-    }
-    
-    public void setInferred(boolean inf) {
-        this.isInferred = inf;
-    }
-    
-    public boolean getInferred() {
-        return this.isInferred;
     }
 
     public void calculateCount() {
@@ -64,13 +54,27 @@ public class HornSubClause {
             this.count = 0;
         }
     }
-    
+
     public void decrementCount() {
         this.count--;
     }
-    
+
     public int getCount() {
         return this.count;
+    }
+
+    public boolean containsLiteral(Literal lit) {
+        boolean exists = false;
+
+        if (clause != null) {
+            for (Literal l : clause) {
+                if (l.equals(lit)) {
+                    exists = true;
+                }
+            }
+        }
+
+        return exists;
     }
 
     public void printSubClause() {

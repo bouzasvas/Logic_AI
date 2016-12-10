@@ -5,6 +5,8 @@
  */
 package Horn_ForwardChaining;
 
+import Logic_AI.Literal;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -24,12 +26,12 @@ public class HornClause {
         KB.add(subClause);
     }
     
-    public ArrayList<HornSubClause> getTrueSubClauses() {
-        ArrayList<HornSubClause> trueSubClauses = new ArrayList<HornSubClause>();
+    public ArrayList<Literal> getFacts() {
+        ArrayList<Literal> trueSubClauses = new ArrayList<Literal>();
         
         for (HornSubClause hsc : KB) {
             if (hsc.getClause() == null) {
-                trueSubClauses.add(hsc);
+                trueSubClauses.add(hsc.getInferrence());
             }
         }
         
@@ -42,7 +44,7 @@ public class HornClause {
         }
     }
     
-    public Iterator<HornSubClause> getIterator() {
-        return this.KB.iterator();
+    public ArrayList<HornSubClause> getSubClauses() {
+        return this.KB;
     }
 }

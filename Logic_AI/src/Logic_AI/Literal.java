@@ -6,6 +6,8 @@ public class Literal implements Comparable<Literal> {
     private String Name;
     //Whether or not the literal is negated; if negation is true then it is negated
     private boolean negation;
+    
+    private boolean inferred = false;
 
     public Literal(String n, boolean neg) {
         this.Name = n;
@@ -28,6 +30,14 @@ public class Literal implements Comparable<Literal> {
         }
     }
 
+    public boolean isInferred() {
+        return inferred;
+    }
+
+    public void setInferred(boolean isInferred) {
+        this.inferred = isInferred;
+    }
+    
     public void setName(String n) {
         this.Name = n;
     }

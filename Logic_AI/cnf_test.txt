@@ -2,4 +2,4 @@
 #Each line should contains the CNF Expression which will be used later by algorithm
 #Only CNF expressions are allowed!
 
-(~P21^B11)^(~B11|P12|P21)^(~P12|B11)^(~B11)
+(~P21|B11)^(~B11|P12|P21)^(~P12|B11)^(~B11)

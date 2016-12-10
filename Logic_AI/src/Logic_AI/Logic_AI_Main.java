@@ -64,7 +64,7 @@ public class Logic_AI_Main {
         CNFMain cnf = new CNFMain(KB, a);
         
         //Always TRUE? FIX!!
-        cnf.PL_Resolution(false);
+        cnf.PL_Resolution(true);
         
         System.out.println();
     }

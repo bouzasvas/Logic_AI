@@ -1,7 +1,7 @@
 #This file is used for Horn Forward Chaining
 #Each Line should contains the KB's Horn Clauses that will used by algorithm
 #Only expression that are formatted like A^B=>C are allowed!
-
+#
 P=>Q
 L^M=>P
 B^L=>M

@@ -7,6 +7,7 @@ package Horn_ForwardChaining;
 
 import Logic_AI.Literal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 /**
@@ -18,28 +19,29 @@ public class HornMain {
     HornClause KB;
     Literal a;
 
-    ArrayList<HornSubClause> agenda = new ArrayList<HornSubClause>();
+    ArrayList<Literal> agenda = new ArrayList<Literal>();
+    HashMap<Literal, Boolean> inferred = new HashMap<Literal, Boolean>();
 
     public HornMain(HornClause KB, Literal a) {
         this.KB = KB;
         this.a = a;
 
-        agenda.addAll(KB.getTrueSubClauses());
+        agenda.addAll(KB.getFacts());
     }
 
     public boolean PL_FC_Entails(boolean details) {
-        Iterator<HornSubClause> KB_Iterator = KB.getIterator();
-
         for (int index = 0; index < agenda.size(); index++) {
-            HornSubClause HSubClause = agenda.get(index);
+            Literal factLiteral = agenda.get(index);
             if (details)
                 System.out.println("Checking if Clause is visited before...");
-            if (!HSubClause.getInferred()) {
-                HSubClause.setInferred(true);
+            if (!factLiteral.isInferred()) {
+                factLiteral.setInferred(true);
 
-                while (KB_Iterator.hasNext()) {
-                    HornSubClause HSub = KB_Iterator.next();
-                    HSub.decrementCount();
+                for (HornSubClause HSub : KB.getSubClauses()) {
+                    
+                    if (HSub.containsLiteral(factLiteral)) {
+                        HSub.decrementCount();
+                    }                 
 
                     if (HSub.getCount() == 0) {
                         if (details)
@@ -49,7 +51,7 @@ public class HornMain {
                             System.out.println("Conclusion " + a.toString() + " comes from KB!");
                             return true;
                         } else {
-                            agenda.add(HSub);
+                            agenda.add(HSub.getInferrence());
                         }
                     }
                 }
