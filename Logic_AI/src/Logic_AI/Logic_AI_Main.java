@@ -3,6 +3,7 @@ package Logic_AI;
 
 import CNF_Resolution.*;
 import Horn_ForwardChaining.*;
+import Horn_PKL.HornPKLClause;
 
 import FileIO.ReadFile;
 import java.util.Scanner;
@@ -79,7 +80,7 @@ public class Logic_AI_Main {
         System.out.print("\nType the path of Horn PKL file: ");
         filepath = input.next();
         
-        ReadFile.HornPKL(filepath);
+        HornPKLClause hornClauses = ReadFile.HornPKL(filepath);
     }
     
     private static void performHornForwardChaining() {

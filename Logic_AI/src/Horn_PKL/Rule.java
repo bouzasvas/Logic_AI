@@ -17,7 +17,8 @@ public class Rule {
     private Relation inferrence;
     
     public Rule(ArrayList<Relation> clause, Relation inferrence) {
-        this.clause =  new ArrayList<Relation>(clause);
+        if (clause != null)
+            this.clause =  new ArrayList<Relation>(clause);
         this.inferrence = new Relation(inferrence);
     }
     

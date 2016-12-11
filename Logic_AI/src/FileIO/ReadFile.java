@@ -5,6 +5,7 @@ import Horn_ForwardChaining.*;
 import Horn_PKL.Relation;
 import Horn_PKL.Rule;
 import Logic_AI.*;
+import Horn_PKL.HornPKLClause;
 
 import java.io.File;
 import java.io.FileReader;
@@ -52,11 +53,12 @@ public class ReadFile {
         try {
             String line;
             while ((line = reader.readLine()) != null) {
-                
+
                 //Commented Lines
-                if (line.startsWith("#"))
+                if (line.startsWith("#")) {
                     continue;
-                
+                }
+
                 String[] andSubClause = line.split("\\^");
 
                 for (String andStr : andSubClause) {
@@ -97,11 +99,12 @@ public class ReadFile {
 
         try {
             while ((line = reader.readLine()) != null) {
-                
+
                 //Commented Lines
-                if (line.startsWith("#"))
+                if (line.startsWith("#")) {
                     continue;
-                
+                }
+
                 HornSubClause hornSub = null;
                 Literal literal;
                 String[] hornParts = line.split("=>");
@@ -141,7 +144,7 @@ public class ReadFile {
                 horn.addHornSubClause(hornSub);
             }
         } catch (IOException ex) {
-            System.err.println("Could not read the next line of file: "+ file.getAbsolutePath());
+            System.err.println("Could not read the next line of file: " + file.getAbsolutePath());
             System.err.println(ex.getMessage());
         }
 
@@ -149,58 +152,108 @@ public class ReadFile {
 
         return horn;
     }
-    
-    public static void HornPKL(String filename) {
+
+    public static HornPKLClause HornPKL(String filename) {
         initBuffer(filename);
-        
+
         String line;
-        
+        HornPKLClause hornClause = new HornPKLClause();
+
         try {
-            while((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null) {
                 Relation rel;
-                
-                if (line.startsWith("#"))
+                Rule rule;
+
+                if (line.startsWith("#")) {
                     continue;
-                
+                }
+
                 String[] infSplit = line.split("=>");
-                
+
                 if (infSplit.length == 1) {
                     int leftParIndex = infSplit[0].lastIndexOf("(");
-                    
+
                     String relName = infSplit[0].substring(0, leftParIndex);
                     ArrayList<String> params = new ArrayList<String>();
-                    
-                    String paramsStr = infSplit[0].substring(leftParIndex);
-                    paramsStr.replace(")", "");
-                    
+
+                    String paramsStr = infSplit[0].substring(leftParIndex + 1);
+                    paramsStr = paramsStr.replace(")", "");
+
                     String[] paramsList = paramsStr.split(",");
-                    
+
+                    for (String str : paramsList) {
+                        params.add(str);
+                    }
+
+                    if (relName.startsWith("~")) {
+                        rel = new Relation(relName.substring(1), params, true);
+                    } else {
+                        rel = new Relation(relName, params, false);
+                    }
+
+                    rule = new Rule(null, rel);
+                } else {
+                    ArrayList<Relation> clauses = new ArrayList<Relation>();
+                    Relation inf;
+
+                    String[] andClause = infSplit[0].split("\\^");
+                    String infStr = infSplit[1];
+
+                    for (String andStr : andClause) {
+                        ArrayList<String> params = new ArrayList<String>();
+
+                        int leftParIndex = andStr.indexOf("(");
+
+                        String relName = andStr.substring(0, leftParIndex);
+
+                        String paramsStr = andStr.substring(leftParIndex + 1);
+                        paramsStr = paramsStr.replace(")", "");
+
+                        String[] paramsList = paramsStr.split(",");
+
+                        for (String str : paramsList) {
+                            params.add(str);
+                        }
+
+                        if (relName.startsWith("~")) {
+                            rel = new Relation(relName.substring(1), params, true);
+                        } else {
+                            rel = new Relation(relName, params, false);
+                        }
+                        clauses.add(rel);
+                    }
+
+                    int leftParIndex = infStr.lastIndexOf("(");
+
+                    String relName = infStr.substring(0, leftParIndex);
+                    ArrayList<String> params = new ArrayList<String>();
+
+                    String paramsStr = infStr.substring(leftParIndex + 1);
+                    paramsStr = paramsStr.replace(")", "");
+
+                    String[] paramsList = paramsStr.split(",");
+
                     for (String str : paramsList) {
                         params.add(str);
                     }
                     
-                    if (relName.startsWith("~"))
-                        rel = new Relation(relName.substring(1), params, true);
-                    else
-                        rel = new Relation(relName, params, false);
-                    
-                    
-                    Rule rule = new Rule(null, rel);
+                    if (infStr.startsWith("~")) {
+                        inf = new Relation(relName.substring(1), params, true);
+                    } else {
+                        inf = new Relation(relName, params, false);
+                    }
+
+                    rule = new Rule(clauses, inf);
                 }
-                else {
-                    
-                }
-                
-                for (String str : infSplit) {
-                    
-                }
+                hornClause.addHornClause(rule);
             }
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             System.err.println("Could not read next line");
             System.err.println(ex.getMessage());
         }
-        
+
         closeFile();
+        
+        return hornClause;
     }
 }
