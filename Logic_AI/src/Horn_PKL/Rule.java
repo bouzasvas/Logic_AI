@@ -35,4 +35,8 @@ public class Rule {
     public Relation getInferrence() {
         return this.inferrence;
     }
+    
+    public ArrayList<Relation> getClause() {
+        return this.clause;
+    }
 }

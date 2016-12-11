@@ -4,8 +4,10 @@ package Logic_AI;
 import CNF_Resolution.*;
 import Horn_ForwardChaining.*;
 import Horn_PKL.HornPKLClause;
+import Horn_PKL.Relation;
 
 import FileIO.ReadFile;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Logic_AI_Main {
@@ -76,11 +78,43 @@ public class Logic_AI_Main {
     
     public static void performHornPKL() {
         String filepath;
+        String userType;
+        
+        Relation a;
+        ArrayList<String> paramsArr = new ArrayList<String>();
         
         System.out.print("\nType the path of Horn PKL file: ");
         filepath = input.next();
         
+        System.out.println("Type the Inference you want to see if TRUE or FALSE from KB facts: ");
+        System.out.println("You can type an expression like \"Criminal(West)\" to see if West is Criminal");
+        System.out.println("Use ~ for logical NOT");
+        System.out.print("Your type: ");
+        userType = input.next();
+        
+        //Get the Horn KB Clauses from txt file
         HornPKLClause hornClauses = ReadFile.HornPKL(filepath);
+        
+        //set the type which we want to confirm or not
+        int leftParIndex = userType.lastIndexOf("(");
+        String relName = userType.substring(0, leftParIndex);
+        String params = userType.substring(leftParIndex, userType.length()-1);
+        String[] paramsList = params.split(",");
+        
+        for (String param : paramsList) {
+            paramsArr.add(param);
+        }
+        
+        if (relName.startsWith("~")) {
+            a = new Relation(relName.substring(1), paramsArr, true);
+        }
+        else {
+            a = new Relation(relName, paramsArr, false);
+        }
+        hornClauses.setA(a);
+        
+        System.out.println("***Performing Horn fol-fc-ask Algorithm...***\n");
+        hornClauses.fol_fc_ask();
     }
     
     private static void performHornForwardChaining() {

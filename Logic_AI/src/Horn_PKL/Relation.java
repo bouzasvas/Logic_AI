@@ -15,6 +15,7 @@ public class Relation {
 
     private String name;
     private ArrayList<String> params;
+    private ArrayList<Boolean> constParam;
     private boolean negation;
 
     public Relation() {
@@ -25,11 +26,24 @@ public class Relation {
         this.name = name;
         this.params = new ArrayList<String>(params);
         this.negation = negation;
+        
+        this.constParam = new ArrayList<Boolean>();
+
+        for (int index = 0; index < this.params.size(); index++) {
+            if (this.params.get(index).toLowerCase().equals(this.params.get(index))) {
+                this.constParam.add(false);
+            }
+            else {
+                this.constParam.add(true);
+            }
+        }
     }
-    
+
     public Relation(Relation rel) {
         this.name = rel.name;
         this.params = new ArrayList<String>(rel.params);
+        
+        this.constParam = new ArrayList<Boolean>(rel.constParam);
     }
 
     public boolean equals(Relation rel) {;
@@ -41,17 +55,18 @@ public class Relation {
     }
 
     public void printRelation() {
-        if (negation)    
-            System.out.print("NOT_"+this.name + "(");
-        else
+        if (negation) {
+            System.out.print("NOT_" + this.name + "(");
+        } else {
             System.out.print(this.name + "(");
-        
+        }
+
         for (String str : this.params) {
-            System.out.print(str+",");
+            System.out.print(str + ",");
         }
         System.out.print(")");
-    }  
-    
+    }
+
     public String getName() {
         return name;
     }
@@ -74,5 +89,9 @@ public class Relation {
 
     public void setNegation(boolean negation) {
         this.negation = negation;
+    }
+    
+    public ArrayList<Boolean> getConstParams() {
+        return this.constParam;
     }
 }
