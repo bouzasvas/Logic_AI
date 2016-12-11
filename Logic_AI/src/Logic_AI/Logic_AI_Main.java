@@ -15,6 +15,7 @@ public class Logic_AI_Main {
     public static void showMenuItems() {
         System.out.println("1. CNF Resolution");
         System.out.println("2. Horn Forward Chaining");
+        System.out.println("3. Horn PKL");
         System.out.println("0. Exit");
 
         System.out.print("\nType the number of your choice: ");
@@ -27,6 +28,9 @@ public class Logic_AI_Main {
                 break;
             case 2:
                 performHornForwardChaining();
+                break;
+            case 3:
+                performHornPKL();
                 break;
             case 0:
                 System.exit(0);
@@ -67,6 +71,15 @@ public class Logic_AI_Main {
         cnf.PL_Resolution(true);
         
         System.out.println();
+    }
+    
+    public static void performHornPKL() {
+        String filepath;
+        
+        System.out.print("\nType the path of Horn PKL file: ");
+        filepath = input.next();
+        
+        ReadFile.HornPKL(filepath);
     }
     
     private static void performHornForwardChaining() {

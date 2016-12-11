@@ -2,12 +2,15 @@ package FileIO;
 
 import CNF_Resolution.*;
 import Horn_ForwardChaining.*;
+import Horn_PKL.Relation;
+import Horn_PKL.Rule;
 import Logic_AI.*;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  *
@@ -145,5 +148,59 @@ public class ReadFile {
         closeFile();
 
         return horn;
+    }
+    
+    public static void HornPKL(String filename) {
+        initBuffer(filename);
+        
+        String line;
+        
+        try {
+            while((line = reader.readLine()) != null) {
+                Relation rel;
+                
+                if (line.startsWith("#"))
+                    continue;
+                
+                String[] infSplit = line.split("=>");
+                
+                if (infSplit.length == 1) {
+                    int leftParIndex = infSplit[0].lastIndexOf("(");
+                    
+                    String relName = infSplit[0].substring(0, leftParIndex);
+                    ArrayList<String> params = new ArrayList<String>();
+                    
+                    String paramsStr = infSplit[0].substring(leftParIndex);
+                    paramsStr.replace(")", "");
+                    
+                    String[] paramsList = paramsStr.split(",");
+                    
+                    for (String str : paramsList) {
+                        params.add(str);
+                    }
+                    
+                    if (relName.startsWith("~"))
+                        rel = new Relation(relName.substring(1), params, true);
+                    else
+                        rel = new Relation(relName, params, false);
+                    
+                    
+                    Rule rule = new Rule(null, rel);
+                }
+                else {
+                    
+                }
+                
+                for (String str : infSplit) {
+                    
+                }
+            }
+        }
+        catch (IOException ex) {
+            System.err.println("Could not read next line");
+            System.err.println(ex.getMessage());
+        }
+        
+        closeFile();
     }
 }
