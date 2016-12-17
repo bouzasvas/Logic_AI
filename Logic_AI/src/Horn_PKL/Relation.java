@@ -28,7 +28,7 @@ public class Relation {
     //  Λίστα που αναπαριστά ποιες από τις παραπάνω παραμέτρους είναι σταθερές (πχ. John)
     private ArrayList<Boolean> constParam;
     private boolean negation;
-
+    
     public Relation() {
 
     }
@@ -43,6 +43,7 @@ public class Relation {
         for (int index = 0; index < this.params.size(); index++) {
             if (this.params.get(index).toLowerCase().equals(this.params.get(index))) {
                 this.constParam.add(false);
+                
             }
             else {
                 this.constParam.add(true);
@@ -104,5 +105,13 @@ public class Relation {
     
     public ArrayList<Boolean> getConstParams() {
         return this.constParam;
+    }
+
+    public ArrayList<Boolean> getConstParam() {
+        return constParam;
+    }
+
+    public void setConstParam(ArrayList<Boolean> constParam) {
+        this.constParam = constParam;
     }
 }

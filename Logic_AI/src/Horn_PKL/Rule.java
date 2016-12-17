@@ -48,4 +48,8 @@ public class Rule {
     public ArrayList<Relation> getClause() {
         return this.clause;
     }
+    
+    public boolean isFact() {
+        return (clause==null) ? true : false;
+    }
 }

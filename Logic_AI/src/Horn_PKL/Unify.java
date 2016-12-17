@@ -17,8 +17,9 @@
 
 package Horn_PKL;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Map.Entry;
 
 public class Unify {
     
@@ -36,8 +37,8 @@ public class Unify {
         x->John.
     
     */
-    public static HashMap<String, String> Unify(Rule a, Rule a1) {
-        HashMap<String, String> unifiedValues = new HashMap<String, String>();
+    public static Entry<String, String> Unify(Rule a, Rule a1) {
+        Entry<String, String> unifiedPair = null;
         
         ArrayList<Relation> relA = a.getClause();
         ArrayList<Relation> relA1 = a1.getClause();
@@ -48,11 +49,14 @@ public class Unify {
             
             for (int index2 = 0; index2 < relAItem.getParams().size(); index2++) {
                 if (!relA1Item.getConstParams().get(index2)) {
-                    unifiedValues.put(relA1Item.getParams().get(index2), relAItem.getParams().get(index2));
+                    unifiedPair = new AbstractMap.SimpleEntry<String, String>
+                    (relA1Item.getParams().get(index2), relAItem.getParams().get(index2));
                 }
+                else
+                    return null;
             }
         }
         
-        return unifiedValues;
+        return unifiedPair;
     }
 }
