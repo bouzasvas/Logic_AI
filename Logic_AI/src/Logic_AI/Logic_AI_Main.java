@@ -9,7 +9,6 @@
 
 package Logic_AI;
 
-
 import CNF_Resolution.*;
 import Horn_ForwardChaining.*;
 import Horn_PKL.HornPKLClause;
@@ -19,11 +18,34 @@ import FileIO.ReadFile;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/*
+
+----------------------------------------------MAIN CLASS-----------------------------------------
+
+    Η κλάση αυτή είναι η Main κλάση για την εκτέλεση του προγράμματος.
+
+    Εμφανίζει στον χρήστη το μενού με τις διαθέσιμες επιλογές, δέχεται ως είσοδο την επιλογή του
+    και εκτελεί ανάλογα με την επιλογή του τον αντίστοιχο αλγόριθμο.
+
+    Συγκεκριμένα πατώντας:
+        1. Εκτελείται ο αλγόριθμος ανάλυσης
+        2. Εκτελείται ο αλγόριθμος εξαγωγής συμπεράσματος προς τα εμπρός για προτάσεις Horn Προτασιακής Λογικής
+        3. Εκτελείται ο αλγόριθμος εξαγωγής συμπεράσματος προς τα εμπρός για προτάσεις Horn ΠΚΛ
+        0. Τερματίζει το πρόγραμμα
+
+    Μετά την επιλογή του ο χρήστης καλέιται να εισάγει ένα αρχείο .txt το οποίο θα χρησιμοποιηθεί ως Βάση Γνώσης
+    για τον εκάστοτε αλγόριθμο και τον προς απόδειξη τύπο.
+    Τα παραπάνω θα χρησιμοποιηθούν από τον αλγόριθμο ο οποίος θα αποφανθεί αν ισχύει ή όχι ο προς απόδειξη τύπος
+    με βάση τους κανόνες που υπάρχουν στη Βάση Γνώσης του.
+
+*/
+
 public class Logic_AI_Main {
 
     static Scanner input = new Scanner(System.in);
     static int userChoice = -1;
 
+    //  Κύριο Μενού
     public static void showMenuItems() {
         System.out.println("1. CNF Resolution");
         System.out.println("2. Horn Forward Chaining");
@@ -33,6 +55,7 @@ public class Logic_AI_Main {
         System.out.print("\nType the number of your choice: ");
     }
 
+    //  Εκτέλεση αλγορίθμου ανάλογα με την επιλογή του χρήστη
     public static void openMenuItem(int choice) {
         switch (choice) {
             case 1:
@@ -79,8 +102,7 @@ public class Logic_AI_Main {
         System.out.println("***Performing CNF Resolution Algorithm...***\n");
         CNFMain cnf = new CNFMain(KB, a);
         
-        //Always TRUE? FIX!!
-        cnf.PL_Resolution(true);
+        cnf.PL_Resolution(false);
         
         System.out.println();
     }

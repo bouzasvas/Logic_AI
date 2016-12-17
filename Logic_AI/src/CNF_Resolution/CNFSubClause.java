@@ -16,11 +16,14 @@ import java.util.Iterator;
 import java.util.Vector;
 
 /*
- * A CNFSubClause in turn consists of a disjunction of literals
+
+    Το CNFSubClause αποτελείται από τα Literals που ενώνονται μεταξύ τους με λογικό OR.
+    Η διάζευζη των CNF Subclauses θα μας δώσει τελικά την CNF έκφραση.
+
  */
 public class CNFSubClause implements Comparable<CNFSubClause>
 {
-    //The literals contained in the clause
+    // HashSet για τα Literals του Subclause ώστε να μην έχουμε διπλότυπα
     private HashSet<Literal> literals;
             
     public CNFSubClause()
@@ -57,9 +60,13 @@ public class CNFSubClause implements Comparable<CNFSubClause>
         System.out.println("**************************\n");
     }
 
-    /* Applies resolution on two CNFSubClauses
-     * The resulting clause will contain all the literals of both CNFSubclauses
-     * except the pair of literals that are a negation of each other.
+    /*
+        
+            Αλγόριθμος Ανάλυσης για 2 CNFSubClauses
+    
+    Το αποτέλεσμά του θα είναι ένα Vector από SubClauses που θα περιέχει όλα τα Literals εκτός αυτών για τα οποία
+    έγινε απαλοιφή.
+    
      */
     public static Vector<CNFSubClause> resolution(CNFSubClause CNF_SC_1, CNFSubClause CNF_SC_2)
     {
@@ -98,7 +105,7 @@ public class CNFSubClause implements Comparable<CNFSubClause>
         return newClauses;
     }
     
-  //Override
+    
     public boolean equals(Object obj)
     {
         CNFSubClause l = (CNFSubClause)obj;
@@ -118,7 +125,7 @@ public class CNFSubClause implements Comparable<CNFSubClause>
         return true;
     }
 	
-    //@Override
+    
     public int hashCode()
     {
         Iterator<Literal> iter = this.getLiteralsList();
@@ -133,7 +140,7 @@ public class CNFSubClause implements Comparable<CNFSubClause>
         return code;
     }
 	
-    //@Override
+    
     public int compareTo(CNFSubClause x)
     {
         int cmp = 0;

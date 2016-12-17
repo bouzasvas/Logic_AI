@@ -11,10 +11,21 @@ package Horn_PKL;
 
 import java.util.ArrayList;
 
+/*
+
+------------------------------Κλάση Relation.java----------------------------------
+
+    Αναπαριστά τις σχέσεις την Πρωτοβάθμιας Κατηγορηματικής Λογικής πχ. Human(John)
+
+*/
+
 public class Relation {
 
+    //  Όνομα σχέσης
     private String name;
+    //  Παράμετροι σχέσης
     private ArrayList<String> params;
+    //  Λίστα που αναπαριστά ποιες από τις παραπάνω παραμέτρους είναι σταθερές (πχ. John)
     private ArrayList<Boolean> constParam;
     private boolean negation;
 

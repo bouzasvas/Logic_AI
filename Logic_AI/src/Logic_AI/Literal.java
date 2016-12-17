@@ -9,6 +9,15 @@
 
 package Logic_AI;
 
+/*
+
+-------------------------------------Literal.java----------------------------------
+
+    Η κλάση αυτή αναπαριστά κάθε σύμβολο της Βάσης Γνώσης για την Προτασιακή Λογική
+    πχ. A,~B κτλ.
+
+*/
+
 public class Literal implements Comparable<Literal> {
 
     //The name of the literal

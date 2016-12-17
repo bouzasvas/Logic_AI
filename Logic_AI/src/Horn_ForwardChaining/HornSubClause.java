@@ -12,10 +12,22 @@ package Horn_ForwardChaining;
 import Logic_AI.Literal;
 import java.util.ArrayList;
 
+/*
+
+------------Κλάση που αναφέρεται στο HornSubClause-----------------------
+
+    Αναπαρτιστά εκφράσεις της μορφής A^B=>C (που μετατρέπονται ισοδύναμα σε προτάσεις Horn) ο συνδυασμός των
+    οποίων θα μας δώσει την τελική KB από Horn Προτάσεις.
+
+*/
+
 public class HornSubClause {
 
+    //  Συνδυασμός γεγονότων που συνθέτουν ένα κανόνα
     private ArrayList<Literal> clause;
+    //  Γεγονός που προκύπτει
     private Literal inferrence;
+    // Αριθμός γεγονότων που χρειάζονται για να συμπεράνουμε το γεγονός της έκφρασης
     private int count;
 
     public HornSubClause() {
@@ -47,6 +59,7 @@ public class HornSubClause {
         return this.inferrence;
     }
 
+    //  Υπολογιστμός του Count με βάση τα γεγονότα που υπάρχουν στο ArrayList
     public void calculateCount() {
         if (this.clause != null) {
             this.count = this.clause.size();

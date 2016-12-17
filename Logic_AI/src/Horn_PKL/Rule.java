@@ -11,9 +11,18 @@ package Horn_PKL;
 
 import java.util.ArrayList;
 
-public class Rule {
+/*
 
+---------------------------------Κλάση Rule.java--------------------------------
+
+    Αναπαριστά μία πρόταση Horn ΠΚΛ πχ. Missile(x)^Owns(Nono,x)=>Sells(West,x,Nono)
+
+*/
+
+public class Rule {
+    //  ArrayList που περιέχει τις σχέσεις του κανόνα
     private ArrayList<Relation> clause;
+    // Σχέση που αφορά το συμπέρασμα που προκύπτει αν ισχύουν οι παραπάνω σχέσεις
     private Relation inferrence;
     
     public Rule(ArrayList<Relation> clause, Relation inferrence) {

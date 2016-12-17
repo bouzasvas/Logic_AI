@@ -12,6 +12,12 @@ package CNF_Resolution;
 import Logic_AI.Literal;
 import java.util.Vector;
 
+/*
+    Περιέχει τον αλγόριθμο ανάλυσης (Resolution) που θα τρέξει η main κλάση του προγράμματος
+    
+    Αποτελείται από την Βάση Γνώσης καθώς και το προς απόδειξη Literal που έχει εισάγει ο χρήστης
+    από το πληκτρολόγιο.
+*/
 public class CNFMain {
 
     CNFClause KB;
@@ -22,6 +28,17 @@ public class CNFMain {
         this.a = a;
     }
 
+    /*
+    
+                                Αλγόριθμος Ανάλυσης
+    
+    Εφαρμογή αλγορίθμου ανάλυσης για μία δοσμένη KB και με τον προς απόδειξη τύπο a.
+    Ο αλγόριθμος αποκρίνεται true ή false ανάλογα με τον αν παρήχθηκε τελικά το κενό subclause.
+    Σε περίπτωση παραγωγής του επιστρέφουμε true ειδάλως false.
+    
+    Προϋπόθεση για να παραχθεί το κενό Subclause είναι να γίνει απαλοιφή όλων των Literals που υπάρχουν στη Βάση Γνώσης.
+    
+    */
     public boolean PL_Resolution(boolean details) {
         //We create a CNFClause that contains all the clauses of our Knowledge Base
         CNFClause clauses = new CNFClause();

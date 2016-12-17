@@ -13,6 +13,14 @@ import Logic_AI.Literal;
 
 import java.util.ArrayList;
 
+/*
+-------------------------------------Αναπαριστά μία πρόταση Horn--------------------------------------
+
+    Αποτελείται από πολλές υπο-προτάσεις Horn (HornSubClause) δηλαδή προτάσεις της μορφής A^B=>C
+    οι οποίες αποθηκεύονται σε μία ArrayList.
+
+*/
+
 public class HornClause {
 
     ArrayList<HornSubClause> KB;
@@ -25,6 +33,7 @@ public class HornClause {
         KB.add(subClause);
     }
     
+    //  Μέθοδος για να πάρουμε τα γεγονότα που έχουμε συμπεράνει από τη Βάση Γνώσης
     public ArrayList<Literal> getFacts() {
         ArrayList<Literal> trueSubClauses = new ArrayList<Literal>();
         

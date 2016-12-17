@@ -11,8 +11,11 @@ package CNF_Resolution;
 
 import java.util.Vector;
 
+//  Αναπαριστά την CNF έκφραση
+
 public class CNFClause 
 {
+    //Κάθε CNF αποτελείται από CNF Subclauses δηλαδή από Literals που συνδέονται μεταξύ τους με λογικά OR.
     public Vector<CNFSubClause> theClauses = new Vector<CNFSubClause>();
     
     public Vector<CNFSubClause> getSubclauses()

@@ -11,6 +11,17 @@ package Horn_PKL;
 
 import java.util.ArrayList;
 
+/*
+
+------Κλάση HornPKLClause για αναπαράσταση προτάσεων Horn στην Πρωτοβάθμια Κατηγορηματική Λογική--------
+
+    Αποτετελείται από μία ArrayList που περιέχει κανόνες (Rules) της μορφής Missile(x)^Owns(Nono,x)
+    καθώς και από ένα συμπέρασμα που είναι μια σχέση (Relation) της μορφής Sells(West,x,Nono).
+
+    Ο συνδυασμός τους μας δίνει τον κανόνα Missile(x)^Owns(Nono,x)=>Sells(West,x,Nono).
+
+*/
+
 public class HornPKLClause {
     private ArrayList<Rule> KB;
     private Relation a;
