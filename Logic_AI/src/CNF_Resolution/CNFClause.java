@@ -1,11 +1,16 @@
+/*
+    Μέλη Ομάδας
+
+Λόκκας Ιωάννης ΑΜ: 3120095
+Μπούζας Βασίλειος ΑΜ: 3120124
+Τασσιάς Παναγιώτης ΑΜ: 3120181
+
+*/
+
 package CNF_Resolution;
 
 import java.util.Vector;
 
-/*
- * A CNFClause consists of a conjunction of CNFSubClauses
- * And each CNFSubClause in turn consists of a disjunction of Literals
- */
 public class CNFClause 
 {
     public Vector<CNFSubClause> theClauses = new Vector<CNFSubClause>();

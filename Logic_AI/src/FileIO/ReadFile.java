@@ -1,3 +1,12 @@
+/*
+    Μέλη Ομάδας
+
+Λόκκας Ιωάννης ΑΜ: 3120095
+Μπούζας Βασίλειος ΑΜ: 3120124
+Τασσιάς Παναγιώτης ΑΜ: 3120181
+
+*/
+
 package FileIO;
 
 import CNF_Resolution.*;
@@ -13,10 +22,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-/**
- *
- * @author Tassias
- */
 public class ReadFile {
 
     private static BufferedReader reader = null;
