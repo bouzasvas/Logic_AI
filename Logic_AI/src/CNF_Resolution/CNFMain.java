@@ -9,7 +9,8 @@
 
 package CNF_Resolution;
 
-import Logic_AI.Literal;
+//import Logic_AI.Literal;
+import CNF_Resolution.CNFSubClause;
 import java.util.Vector;
 
 /*
@@ -21,9 +22,9 @@ import java.util.Vector;
 public class CNFMain {
 
     CNFClause KB;
-    Literal a;
+    CNFSubClause a;
 
-    public CNFMain(CNFClause KB, Literal a) {
+    public CNFMain(CNFClause KB, CNFSubClause a) {
         this.KB = KB;
         this.a = a;
     }
@@ -45,9 +46,12 @@ public class CNFMain {
         clauses.getSubclauses().addAll(this.KB.getSubclauses());
 
         //...plus a clause containing the negation of the literal we want to prove
-        Literal aCopy = new Literal(this.a.getName(), !this.a.getNeg());
-        CNFSubClause aClause = new CNFSubClause();
-        aClause.getLiterals().add(aCopy);
+        
+        //Literal aCopy = new Literal(this.a.getName(), !this.a.getNeg());
+        CNFSubClause aClause = new CNFSubClause(a);
+        aClause.negateLiterals();
+        //CNFSubClause aClause = new CNFSubClause();
+        //aClause.getLiterals().add(aCopy);
         clauses.getSubclauses().add(aClause);
 
         System.out.println("We want to prove...");

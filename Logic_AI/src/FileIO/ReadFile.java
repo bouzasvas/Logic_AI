@@ -46,9 +46,7 @@ public class ReadFile {
         try {
             reader = new BufferedReader(new FileReader(file));
         } catch (IOException ex) {
-            System.err.println("Could not open file:\n" + file.getAbsolutePath());
-            System.err.println(ex.getMessage());
-            System.exit(-1);
+            System.err.println("Could not open file:" + file.getAbsolutePath());
         }
     }
 
@@ -59,7 +57,9 @@ public class ReadFile {
             file = null;
         } catch (IOException ex) {
             System.err.println("Could not close file:\n" + file.getAbsolutePath());
-            System.err.println(ex.getMessage());
+        }
+        catch (NullPointerException nullEx) {
+            System.err.println("File could not close because buffer has not been initialized, check the file path!");
         }
     }
 
@@ -106,10 +106,13 @@ public class ReadFile {
                     KB.getSubclauses().add(cnf);
                 }
             }
-
         } catch (IOException ex) {
-            System.err.println("Something went wrong while trying to read from file:\n" + file.getAbsolutePath());
-            System.err.println(ex.getMessage());
+            System.err.println("Something went wrong while trying to read from file:" + file.getAbsolutePath());
+            return null;
+        }
+        catch (NullPointerException nullEx) {
+            System.err.println("Buffer has not been initialized, check the file path!");
+            return null;
         }
 
         closeFile();
@@ -183,6 +186,11 @@ public class ReadFile {
         } catch (IOException ex) {
             System.err.println("Could not read the next line of file: " + file.getAbsolutePath());
             System.err.println(ex.getMessage());
+            return null;
+        }
+        catch (NullPointerException nullEx) {
+            System.err.println("Buffer has not been initialized, check the file path!");
+            return null;
         }
 
         closeFile();
@@ -308,6 +316,11 @@ public class ReadFile {
         } catch (IOException ex) {
             System.err.println("Could not read next line");
             System.err.println(ex.getMessage());
+            return null;
+        }
+        catch (NullPointerException nullEx) {
+            System.err.println("Buffer has not been initialized, check the file path!");
+            return null;
         }
 
         closeFile();

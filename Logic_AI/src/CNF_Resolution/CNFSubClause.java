@@ -30,6 +30,11 @@ public class CNFSubClause implements Comparable<CNFSubClause>
     {
         literals = new HashSet<Literal>();
     }
+    
+    public CNFSubClause(CNFSubClause subclause) {
+        literals = new HashSet<Literal>();
+        literals.addAll(subclause.getLiterals());
+    }
          
     public  HashSet<Literal> getLiterals()            
     {
@@ -58,6 +63,12 @@ public class CNFSubClause implements Comparable<CNFSubClause>
             l.print();
         }
         System.out.println("**************************\n");
+    }
+    
+    public void negateLiterals() {
+        for (Literal l : literals) {
+            l.setNeg(!l.getNeg());
+        }
     }
 
     /*
