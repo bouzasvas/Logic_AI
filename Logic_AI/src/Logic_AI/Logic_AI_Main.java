@@ -124,17 +124,17 @@ public class Logic_AI_Main {
 
         System.out.print("\nType the path of Horn PKL file: ");
         filepath = input.next();
+        
+        //Get the Horn KB Clauses from txt file
+        HornPKLClause hornClauses = ReadFile.HornPKL(filepath);
+        
+        if (hornClauses == null) return;
 
         System.out.println("Type the Inference you want to see if TRUE or FALSE from KB facts: ");
         System.out.println("You can type an expression like \"Criminal(West)\" to see if West is Criminal");
         System.out.println("Use ~ for logical NOT");
         System.out.print("Your type: ");
         userType = input.next();
-
-        //Get the Horn KB Clauses from txt file
-        HornPKLClause hornClauses = ReadFile.HornPKL(filepath);
-        
-        if (hornClauses == null) return;
 
         //set the type which we want to confirm or not
         int leftParIndex = userType.lastIndexOf("(");
