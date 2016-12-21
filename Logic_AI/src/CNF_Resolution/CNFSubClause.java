@@ -66,7 +66,7 @@ public class CNFSubClause implements Comparable<CNFSubClause>
     }
     
     public void negateLiterals() {
-        for (Literal l : literals) {
+        for (Literal l : this.literals) {
             l.setNeg(!l.getNeg());
         }
     }

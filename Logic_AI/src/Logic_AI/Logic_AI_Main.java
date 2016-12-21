@@ -15,6 +15,7 @@ import Horn_PKL.Relation;
 
 import FileIO.ReadFile;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Scanner;
 
 /*
@@ -81,14 +82,14 @@ public class Logic_AI_Main {
         CNFClause KB = null;
         Literal a = null;
 
-        System.out.print("\nType the path of file you want to perform Resolution Algorithm: ");
+        System.out.print("\nType the path of KB (Knowledge Base) file for Resolution Algorithm: ");
 
         filepath = input.next();
         KB = ReadFile.CNFReadFile(filepath);
         
         if (KB == null) return;
 
-        System.out.println("Type the expression you want to prove if TRUE or FALSE");
+        System.out.println("Type the expression you want to prove");
         System.out.println("(use ^ for logical AND, | for logical OR and ~ for logical NOT)");
         System.out.print("Your expression: ");
 
@@ -122,7 +123,7 @@ public class Logic_AI_Main {
         Relation a;
         ArrayList<String> paramsArr = new ArrayList<String>();
 
-        System.out.print("\nType the path of Horn PKL file: ");
+        System.out.print("\nType the path of Horn KB file: ");
         filepath = input.next();
         
         //Get the Horn KB Clauses from txt file
@@ -130,7 +131,7 @@ public class Logic_AI_Main {
         
         if (hornClauses == null) return;
 
-        System.out.println("Type the Inference you want to see if TRUE or FALSE from KB facts: ");
+        System.out.println("Type the expression you want to prove");
         System.out.println("You can type an expression like \"Criminal(West)\" to see if West is Criminal");
         System.out.println("Use ~ for logical NOT");
         System.out.print("Your type: ");
@@ -154,7 +155,9 @@ public class Logic_AI_Main {
         hornClauses.setA(a);
 
         System.out.println("***Performing Horn fol-fc-ask Algorithm...***\n");
-        hornClauses.fol_fc_ask();
+        
+        Map.Entry<String, String> mapEntry = hornClauses.fol_fc_ask();
+        System.out.println("Unify Done, {" + mapEntry.getKey() + ", " + mapEntry.getValue() + "}");
     }
 
     private static void performHornForwardChaining() {
@@ -170,7 +173,7 @@ public class Logic_AI_Main {
         
         if (KB == null) return;
 
-        System.out.print("Type the inferred you want to prove TRUE or FALSE: ");
+        System.out.print("Type the expression you want to prove: ");
         userInferred = input.next();
 
         if (userInferred.startsWith("~")) {

@@ -5,24 +5,22 @@
 Μπούζας Βασίλειος ΑΜ: 3120124
 Τασσιάς Παναγιώτης ΑΜ: 3120181
 
-*/
+ */
 
-/*
+ /*
 
 -----------------------------Unify.java-------------------------
 
     Περιέχει τον αλγόριθμο που αφορά την ενοποίηση των μεταβλητών.
 
-*/
-
+ */
 package Horn_PKL;
 
 import java.util.AbstractMap;
-import java.util.ArrayList;
 import java.util.Map.Entry;
 
 public class Unify {
-    
+
     /*
     
     ----------------Αλγόριθμος Ενοποίησης (Uify) μεταβλητών--------------------
@@ -33,30 +31,27 @@ public class Unify {
         Παίρνει ως είσοδο 2 κανόνες με την ακόλουθη μορφή:
             -a: Human(x)
             -a1: Human(John)
-        και βγάζει ως έξοδο έναν ενοποιητή (εδώ ένα HashMap) που κάνει την ενοποίηση
+        και βγάζει ως έξοδο έναν ενοποιητή (εδώ ένα Map.Entry) που κάνει την ενοποίηση
         x->John.
     
-    */
-    public static Entry<String, String> Unify(Rule a, Rule a1) {
+     */
+    public static Entry<String, String> Unify(Relation a, Relation a1) {
         Entry<String, String> unifiedPair = null;
-        
-        ArrayList<Relation> relA = a.getClause();
-        ArrayList<Relation> relA1 = a1.getClause();
-        
-        for (int index = 0; index < relA.size(); index++) {
-            Relation relAItem = relA.get(index);
-            Relation relA1Item = relA1.get(index);
-            
-            for (int index2 = 0; index2 < relAItem.getParams().size(); index2++) {
-                if (!relA1Item.getConstParams().get(index2)) {
-                    unifiedPair = new AbstractMap.SimpleEntry<String, String>
-                    (relA1Item.getParams().get(index2), relAItem.getParams().get(index2));
-                }
-                else
+
+        if (a.getName().equals(a1.getName())) {
+            for (int index = 0; index < a.getParams().size(); index++) {
+                if (!a.getConstParams().get(index)) {
+                    if (!a.getParams().get(index).equals(a1.getParams().get(index))) {
+                        unifiedPair = new AbstractMap.SimpleEntry<String, String>(a.getParams().get(index), a1.getParams().get(index));
+                    }
+                } else {
                     return null;
+                }
             }
         }
-        
+        else
+            return null;
+
         return unifiedPair;
     }
 }
