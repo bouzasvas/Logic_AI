@@ -63,7 +63,7 @@ public class HornPKLClause {
         }
     }
 
-    public HashMap<String, String> fol_fc_ask() {
+    public HashMap<String, String> fol_fc_ask(boolean details) {
         int varIndex = 1;
         Rule userRule = new Rule(null, a);
 
@@ -73,10 +73,16 @@ public class HornPKLClause {
             for (int index = 0; index < this.KB.size(); index++) {
                 Rule rule = this.KB.get(index);
                 if (!rule.isFact()) {
+                    if (details) {
+                        System.out.println("New vars chosen for " + rule);
+                    }
                     newVars(rule, String.valueOf(varIndex), false);
-                    for (int index2 = index; index2 < this.KB.size(); index2++) {
+                    for (int index2 = 0; index2 < this.KB.size(); index2++) {
                         Rule rule2 = this.KB.get(index2);
                         if (rule2.isFact()) {
+                            if (details) {
+                                System.out.println("New vars chosen for " + rule);
+                            }
                             newVars(rule2, String.valueOf(varIndex), true);
                             unifiedVars.putAll(Unify.Unify(rule, rule2, false));
                         }
@@ -86,7 +92,7 @@ public class HornPKLClause {
                     for (int index3 = 0; index3 < newParams.size(); index3++) {
                         String param = newParams.get(index3);
                         if (unifiedVars.containsKey(param)) {
-                            //Rule newRule = new Rule(null, new Relation(unifiedVars))
+                            if (details) System.out.println("Subsitute " + param + " to " + unifiedVars.get(param));
                             newUnify = true;
                             newParams.set(index3, unifiedVars.get(param));
                         }
@@ -95,16 +101,22 @@ public class HornPKLClause {
                     if (newUnify) {
                         Relation newRelation = new Relation(rule.getInferrence().getName(), newParams, rule.getInferrence().isNegation());
                         Rule newRule = new Rule(null, newRelation);
-                        this.facts.add(newRule);
 
-                        unifiedVars.putAll(Unify.Unify(newRule, userRule, true));
-
-                        if (!unifiedVars.isEmpty()) {
-                            return unifiedVars;
+                        if (!(this.KB.contains(newRule) || this.facts.contains(newRule))) {
+                            if (details) {
+                                System.out.println("New rule to be added to KB! " + newRule);
+                            }                   
+                            this.facts.add(newRule);
+                            HashMap<String, String> unifyA = Unify.Unify(newRule, userRule, true);
+                            if (!unifyA.isEmpty()) {
+                                if (details) System.out.println("Unify with user type!!!");
+                                return unifyA;
+                            }
                         }
                     }
                 }
                 varIndex++;
+                if (details) System.out.println("Next iteration...");
             }
             this.KB.addAll(this.facts);
         } while (!this.facts.isEmpty());

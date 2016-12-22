@@ -50,8 +50,6 @@ public class CNFMain {
         //Literal aCopy = new Literal(this.a.getName(), !this.a.getNeg());
         CNFSubClause aClause = new CNFSubClause(a);
         aClause.negateLiterals();
-        //CNFSubClause aClause = new CNFSubClause();
-        //aClause.getLiterals().add(aCopy);
         clauses.getSubclauses().add(aClause);
 
         System.out.println("We want to prove...");

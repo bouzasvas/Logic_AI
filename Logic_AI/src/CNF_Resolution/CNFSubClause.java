@@ -28,12 +28,15 @@ public class CNFSubClause implements Comparable<CNFSubClause>
             
     public CNFSubClause()
     {
-        literals = new HashSet<Literal>();
+        this.literals = new HashSet<Literal>();
     }
     
     public CNFSubClause(CNFSubClause subclause) {
-        literals = new HashSet<Literal>();
-        literals.addAll(subclause.getLiterals());
+        this.literals = new HashSet<Literal>();
+        
+        for (Literal l : subclause.getLiterals()) {
+            this.literals.add(new Literal(l));
+        }
     }
          
     public  HashSet<Literal> getLiterals()            
@@ -43,7 +46,7 @@ public class CNFSubClause implements Comparable<CNFSubClause>
     
     public Iterator<Literal> getLiteralsList()
     {
-        return literals.iterator();
+        return this.literals.iterator();
     }
          
     public boolean isEmpty()

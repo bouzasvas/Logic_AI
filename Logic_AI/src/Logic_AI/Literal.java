@@ -32,6 +32,12 @@ public class Literal implements Comparable<Literal> {
         this.negation = neg;
     }
 
+    public Literal(Literal l) {
+        this.Name = l.Name;
+        this.negation = l.negation;
+        this.inferred = l.inferred;
+    }
+
     public void print() {
         if (negation) {
             System.out.println("NOT_" + Name);

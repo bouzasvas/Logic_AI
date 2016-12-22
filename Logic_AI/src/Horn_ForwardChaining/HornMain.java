@@ -54,7 +54,7 @@ public class HornMain {
         for (int index = 0; index < agenda.size(); index++) {
             Literal factLiteral = agenda.get(index);
             if (details)
-                System.out.println("Checking if Clause is visited before...");
+                System.out.println("Checking if Clause " + factLiteral +" is visited before...");
             
             //  Έλεγχος αν έχω ξαναεπισκεφθεί το συγκεκριμένο γεγονός
             if (!factLiteral.isInferred()) {
@@ -64,25 +64,34 @@ public class HornMain {
                 for (HornSubClause HSub : KB.getSubClauses()) {
                     //  Αν συμμετέχει το συγκεκριμένο γεγονός στο HornSubClause μείωσε του το count
                     if (HSub.containsLiteral(factLiteral)) {
+                        if (details) {
+                            HSub.printSubClause();
+                            System.out.println("contains literal: " + factLiteral);
+                            System.out.println("Decrease the count!");
+                        }
                         HSub.decrementCount();
                     }                 
                     //  Πυροδότηση κανόνα όταν το count γίνει 0
                     if (HSub.getCount() == 0) {
-                        if (details)
-                            System.out.println("Fire the Rule!");
+                        if (details) {
+                            System.out.println("Count = 0, fire the Rule!");
+                        }
                         if (HSub.getInferrence().equals(a)) {
-                            System.out.println("-----TRUE-----");
+                            System.out.println("-----------TRUE------------");
                             System.out.println("Conclusion " + a.toString() + " comes from KB!");
                             return true;
                         } else {
                             //  Προσθήκη του γεγονότος που συμπεράναμε στη KB
+                            if (details) {
+                                System.out.println("New fact " + HSub.getInferrence() + " added to KB!");
+                            }
                             agenda.add(HSub.getInferrence());
                         }
                     }
                 }
             }
         }
-        System.out.println("-----FALSE-----");
+        System.out.println("--------------FALSE------------");
         System.out.println("No conclusion occured from the KB");
         return false;
     }

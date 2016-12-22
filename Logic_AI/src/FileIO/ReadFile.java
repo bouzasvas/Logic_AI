@@ -44,6 +44,7 @@ public class ReadFile {
         file = new File(filename);
 
         try {
+            System.out.println("\nStart Reading.....");
             reader = new BufferedReader(new FileReader(file));
         } catch (IOException ex) {
             System.err.println("Could not open file:" + file.getAbsolutePath());
@@ -55,6 +56,7 @@ public class ReadFile {
         try {
             reader.close();
             file = null;
+            System.out.println("SUCCESS!\n");
         } catch (IOException ex) {
             System.err.println("Could not close file:\n" + file.getAbsolutePath());
         }
@@ -111,7 +113,7 @@ public class ReadFile {
             return null;
         }
         catch (NullPointerException nullEx) {
-            System.err.println("Buffer has not been initialized, check the file path!");
+            System.err.println("Buffer has not been initialized, check the file path!\n");
             return null;
         }
 
@@ -189,7 +191,7 @@ public class ReadFile {
             return null;
         }
         catch (NullPointerException nullEx) {
-            System.err.println("Buffer has not been initialized, check the file path!");
+            System.err.println("Buffer has not been initialized, check the file path!\n");
             return null;
         }
 
@@ -319,7 +321,7 @@ public class ReadFile {
             return null;
         }
         catch (NullPointerException nullEx) {
-            System.err.println("Buffer has not been initialized, check the file path!");
+            System.err.println("Buffer has not been initialized, check the file path!\n");
             return null;
         }
 

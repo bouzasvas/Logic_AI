@@ -16,6 +16,7 @@ import Horn_PKL.Relation;
 import FileIO.ReadFile;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /*
@@ -71,7 +72,7 @@ public class Logic_AI_Main {
                 System.exit(0);
                 break;
             default:
-                System.out.println("Please choose one of the available options!");
+                System.out.println("\n!!!!Please choose one of the available options!!!!!\n");
                 break;
         }
     }
@@ -87,9 +88,11 @@ public class Logic_AI_Main {
 
         filepath = input.next();
         KB = ReadFile.CNFReadFile(filepath);
-        
+
         //  Σε περίπτωση που κάτι πήγε στραβά με το άνοιγμα του αρχείου επέστρεψε στο αρχικό μενού
-        if (KB == null) return;
+        if (KB == null) {
+            return;
+        }
 
         System.out.println("Type the expression you want to prove");
         System.out.println("(use ^ for logical AND, | for logical OR and ~ for logical NOT)");
@@ -98,7 +101,7 @@ public class Logic_AI_Main {
         userExpression = input.next();
 
         CNFSubClause cnfsub = new CNFSubClause();
-        
+
         //  Χωρισμός της εισόδου του χρήστη στο χαρακτήρα '|' που αναπαριστά το Λογικό OR
         String[] userExpOr = userExpression.split("\\|");
         for (String orLit : userExpOr) {
@@ -110,10 +113,14 @@ public class Logic_AI_Main {
             cnfsub.getLiterals().add(a);
         }
 
+        //  Επιλογή του χρήστη αν θέλει να εμφανιστούν ή όχι οι λεπτομέρειες εκτέλεησς του αλγορίθμου
+        System.out.print("Print details during execution? (y/n): ");
+        String details = input.next();
+
         System.out.println("***Performing CNF Resolution Algorithm...***\n");
         CNFMain cnf = new CNFMain(KB, cnfsub);
 
-        cnf.PL_Resolution(false);
+        cnf.PL_Resolution(true ? details.startsWith("y") : false);
 
         System.out.println();
     }
@@ -128,9 +135,11 @@ public class Logic_AI_Main {
         filepath = input.next();
 
         KB = ReadFile.HornForwardChaining(filepath);
-        
+
         //  Σε περίπτωση που κάτι πήγε στραβά με το άνοιγμα του αρχείου επέστρεψε στο αρχικό μενού
-        if (KB == null) return;
+        if (KB == null) {
+            return;
+        }
 
         System.out.print("Type the expression you want to prove: ");
         userInferred = input.next();
@@ -141,13 +150,17 @@ public class Logic_AI_Main {
             a = new Literal(userInferred, false);
         }
 
+        //  Επιλογή του χρήστη αν θέλει να εμφανιστούν ή όχι οι λεπτομέρειες εκτέλεησς του αλγορίθμου
+        System.out.print("Print details during execution? (y/n): ");
+        String details = input.next();
+        
         System.out.println("***Performing Horn Forward Chaining...***\n");
         HornMain horn = new HornMain(KB, a);
-        horn.PL_FC_Entails(false);
-    
+        horn.PL_FC_Entails(true ? details.startsWith("y") : false);
+
         System.out.println();
     }
-    
+
     public static void performHornPKL() {
         String filepath;
         String userType;
@@ -157,12 +170,14 @@ public class Logic_AI_Main {
 
         System.out.print("\nType the path of Horn KB file: ");
         filepath = input.next();
-        
+
         //  Εισαγωγή Βάσης Γνώσης από αρχείο .txt
         HornPKLClause hornClauses = ReadFile.HornPKL(filepath);
-        
+
         //  Σε περίπτωση που κάτι πήγε στραβά με το άνοιγμα του αρχείου επέστρεψε στο αρχικό μενού
-        if (hornClauses == null) return;
+        if (hornClauses == null) {
+            return;
+        }
 
         System.out.println("Type the expression you want to prove");
         System.out.println("You can type an expression like \"Criminal(West)\" to see if West is Criminal");
@@ -171,10 +186,23 @@ public class Logic_AI_Main {
         userType = input.next();
 
         //  Ορισμός της προς απόδειξη σχέσης ως αντκείμενο της κλάσης Relation
-        int leftParIndex = userType.lastIndexOf("(");
-        String relName = userType.substring(0, leftParIndex);
-        String params = userType.substring(leftParIndex, userType.length() - 1);
-        String[] paramsList = params.split(",");
+        String[] paramsList = null;
+        String relName = null;
+
+        while (true) {
+            try {
+                int leftParIndex = userType.lastIndexOf("(");
+                relName = userType.substring(0, leftParIndex);
+                String params = userType.substring(leftParIndex+1, userType.length() - 1);
+                paramsList = params.split(",");
+            } catch (StringIndexOutOfBoundsException ex) {
+                System.err.println("Check your expression, only expression which follow the format Human(John) are allowed!");
+                System.out.print("Your expression: ");
+                userType = input.next();
+                continue;
+            }
+            break;
+        }
 
         for (String param : paramsList) {
             paramsArr.add(param);
@@ -186,21 +214,24 @@ public class Logic_AI_Main {
             a = new Relation(relName, paramsArr, false);
         }
         hornClauses.setA(a);
+        
+        //  Επιλογή του χρήστη αν θέλει να εμφανιστούν ή όχι οι λεπτομέρειες εκτέλεησς του αλγορίθμου
+        System.out.print("Print details during execution? (y/n): ");
+        String details = input.next();
 
         System.out.println("***Performing Horn fol-fc-ask Algorithm...***\n");
-        
+
         //  Ο αλγόριθμος επιστρέφει ένα Map.Entry της μορφής {x -> West} σε περίπτωση που
         //  καταφέρει να κάνει την ενοποίηση με τον προς απόδειξη τύπο
-        HashMap<String, String> unifiedMap = hornClauses.fol_fc_ask();
-        
+        HashMap<String, String> unifiedMap = hornClauses.fol_fc_ask(true ? details.startsWith("y") : false);
+
         if (unifiedMap != null) {
             System.out.println("Unify Done!");
             for (String param : a.getParams()) {
-                System.out.print("x"+"->"+unifiedMap.get("x1"));
+                System.out.print("x" + "->" + unifiedMap.get(param));
             }
             System.out.println();
-        }
-        else {
+        } else {
             System.out.println("Could not find unifier for your expression!");
         }
         System.out.println();
@@ -212,8 +243,17 @@ public class Logic_AI_Main {
             System.out.println("***********Main Menu**********");
             showMenuItems();
 
-            userChoice = input.nextInt();
-            openMenuItem(userChoice);
+            while (true) {
+                try {
+                    userChoice = input.nextInt();
+                } catch (InputMismatchException ex) {
+                    System.err.print("Only numbers are allowed for your choice! Please type 1, 2 or 3 > ");
+                    input.next();
+                    continue;
+                }
+                openMenuItem(userChoice);
+                break;
+            }
         }
     }
 }
