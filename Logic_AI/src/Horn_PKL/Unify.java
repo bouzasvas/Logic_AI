@@ -1,57 +1,67 @@
 /*
-    Μέλη Ομάδας
+ Μέλη Ομάδας
 
-Λόκκας Ιωάννης ΑΜ: 3120095
-Μπούζας Βασίλειος ΑΜ: 3120124
-Τασσιάς Παναγιώτης ΑΜ: 3120181
+ Λόκκας Ιωάννης ΑΜ: 3120095
+ Μπούζας Βασίλειος ΑΜ: 3120124
+ Τασσιάς Παναγιώτης ΑΜ: 3120181
 
  */
 
- /*
+/*
 
------------------------------Unify.java-------------------------
+ -----------------------------Unify.java-------------------------
 
-    Περιέχει τον αλγόριθμο που αφορά την ενοποίηση των μεταβλητών.
+ Περιέχει τον αλγόριθμο που αφορά την ενοποίηση των μεταβλητών.
 
  */
 package Horn_PKL;
 
 import java.util.AbstractMap;
-import java.util.Map.Entry;
+import java.util.HashMap;
 
 public class Unify {
 
     /*
     
-    ----------------Αλγόριθμος Ενοποίησης (Uify) μεταβλητών--------------------
+     ----------------Αλγόριθμος Ενοποίησης (Uify) μεταβλητών--------------------
     
-        Ο αλγόριθμος ενοποίησης όπως περιγράφεται στις διαφάνειες του μαθήματος
-    .   με μια μικρή αλλαγή που αφορά τις παραμέτρους του.
+     Ο αλγόριθμος ενοποίησης όπως περιγράφεται στις διαφάνειες του μαθήματος
+     .   με μια μικρή αλλαγή που αφορά τις παραμέτρους του.
     
-        Παίρνει ως είσοδο 2 κανόνες με την ακόλουθη μορφή:
-            -a: Human(x)
-            -a1: Human(John)
-        και βγάζει ως έξοδο έναν ενοποιητή (εδώ ένα Map.Entry) που κάνει την ενοποίηση
-        x->John.
+     Παίρνει ως είσοδο 2 κανόνες με την ακόλουθη μορφή:
+     -a: Human(x)
+     -a1: Human(John)
+     και βγάζει ως έξοδο έναν ενοποιητή (εδώ ένα Map.Entry) που κάνει την ενοποίηση
+     x->John.
     
      */
-    public static Entry<String, String> Unify(Relation a, Relation a1) {
-        Entry<String, String> unifiedPair = null;
+    public static HashMap Unify(Rule a, Rule a1, boolean inferrences) {
+        HashMap<String, String> unifiedMap = new HashMap<>();
+        Relation rel1 = a1.getInferrence();
 
-        if (a.getName().equals(a1.getName())) {
-            for (int index = 0; index < a.getParams().size(); index++) {
-                if (!a.getConstParams().get(index)) {
-                    if (!a.getParams().get(index).equals(a1.getParams().get(index))) {
-                        unifiedPair = new AbstractMap.SimpleEntry<String, String>(a.getParams().get(index), a1.getParams().get(index));
+        if (!inferrences) {
+            for (Relation rel : a.getClause()) {
+                if (rel.getName().equals(rel1.getName())) {
+                    for (int index = 0; index < rel.getParams().size(); index++) {
+                        if (!rel.getConstParams().get(index)) {
+                            if (!rel.getParams().get(index).equals(rel1.getParams().get(index))) {
+                                unifiedMap.put(rel.getParams().get(index), rel1.getParams().get(index));
+                            }
+                        }
                     }
-                } else {
-                    return null;
+                }
+            }
+        } else {
+            Relation inf = a.getInferrence();
+            Relation inf1 = a1.getInferrence();
+
+            if (inf.getName().equals(inf1.getName())) {
+                for (int index = 0; index < inf.getParams().size(); index++) {
+                    unifiedMap.put(inf.getParams().get(index), inf1.getParams().get(index));
                 }
             }
         }
-        else
-            return null;
 
-        return unifiedPair;
+        return unifiedMap;
     }
 }

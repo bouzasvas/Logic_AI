@@ -107,11 +107,19 @@ public class Relation {
         return this.constParam;
     }
 
-    public ArrayList<Boolean> getConstParam() {
-        return constParam;
-    }
-
-    public void setConstParam(ArrayList<Boolean> constParam) {
+    public void setConstParams(ArrayList<Boolean> constParam) {
         this.constParam = constParam;
+    }
+    
+    public boolean getConstParam(int index) {
+        return this.constParam.get(index);
+    }
+    
+    public String getParam(int index) {
+        return this.params.get(index);
+    }
+    
+    public void setParam(int index, String param) {
+        this.params.set(index, param);
     }
 }

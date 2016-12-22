@@ -15,7 +15,7 @@ import Horn_PKL.Relation;
 
 import FileIO.ReadFile;
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.HashMap;
 import java.util.Scanner;
 
 /*
@@ -46,10 +46,11 @@ public class Logic_AI_Main {
 
     //  Κύριο Μενού
     public static void showMenuItems() {
-        System.out.println("1. CNF Resolution");
-        System.out.println("2. Horn Forward Chaining");
-        System.out.println("3. Horn PKL");
-        System.out.println("0. Exit");
+        System.out.println("//  1. CNF Resolution");
+        System.out.println("//  2. Horn Forward Chaining");
+        System.out.println("//  3. Horn PKL");
+        System.out.println("//  0. Exit");
+        System.out.println("******************************");
 
         System.out.print("\nType the number of your choice: ");
     }
@@ -87,6 +88,7 @@ public class Logic_AI_Main {
         filepath = input.next();
         KB = ReadFile.CNFReadFile(filepath);
         
+        //  Σε περίπτωση που κάτι πήγε στραβά με το άνοιγμα του αρχείου επέστρεψε στο αρχικό μενού
         if (KB == null) return;
 
         System.out.println("Type the expression you want to prove");
@@ -116,6 +118,36 @@ public class Logic_AI_Main {
         System.out.println();
     }
 
+    private static void performHornForwardChaining() {
+        String filepath;
+        String userInferred;
+        HornClause KB = null;
+        Literal a = null;
+
+        System.out.print("\nType the path of Horn KB file: ");
+        filepath = input.next();
+
+        KB = ReadFile.HornForwardChaining(filepath);
+        
+        //  Σε περίπτωση που κάτι πήγε στραβά με το άνοιγμα του αρχείου επέστρεψε στο αρχικό μενού
+        if (KB == null) return;
+
+        System.out.print("Type the expression you want to prove: ");
+        userInferred = input.next();
+
+        if (userInferred.startsWith("~")) {
+            a = new Literal(userInferred.substring(1), true);
+        } else {
+            a = new Literal(userInferred, false);
+        }
+
+        System.out.println("***Performing Horn Forward Chaining...***\n");
+        HornMain horn = new HornMain(KB, a);
+        horn.PL_FC_Entails(false);
+    
+        System.out.println();
+    }
+    
     public static void performHornPKL() {
         String filepath;
         String userType;
@@ -126,9 +158,10 @@ public class Logic_AI_Main {
         System.out.print("\nType the path of Horn KB file: ");
         filepath = input.next();
         
-        //Get the Horn KB Clauses from txt file
+        //  Εισαγωγή Βάσης Γνώσης από αρχείο .txt
         HornPKLClause hornClauses = ReadFile.HornPKL(filepath);
         
+        //  Σε περίπτωση που κάτι πήγε στραβά με το άνοιγμα του αρχείου επέστρεψε στο αρχικό μενού
         if (hornClauses == null) return;
 
         System.out.println("Type the expression you want to prove");
@@ -137,7 +170,7 @@ public class Logic_AI_Main {
         System.out.print("Your type: ");
         userType = input.next();
 
-        //set the type which we want to confirm or not
+        //  Ορισμός της προς απόδειξη σχέσης ως αντκείμενο της κλάσης Relation
         int leftParIndex = userType.lastIndexOf("(");
         String relName = userType.substring(0, leftParIndex);
         String params = userType.substring(leftParIndex, userType.length() - 1);
@@ -156,44 +189,27 @@ public class Logic_AI_Main {
 
         System.out.println("***Performing Horn fol-fc-ask Algorithm...***\n");
         
-        Map.Entry<String, String> mapEntry = hornClauses.fol_fc_ask();
-        System.out.println("Unify Done, {" + mapEntry.getKey() + ", " + mapEntry.getValue() + "}");
-    }
-
-    private static void performHornForwardChaining() {
-        String filepath;
-        String userInferred;
-        HornClause KB = null;
-        Literal a = null;
-
-        System.out.print("\nType the path of Horn KB file: ");
-        filepath = input.next();
-
-        KB = ReadFile.HornForwardChaining(filepath);
+        //  Ο αλγόριθμος επιστρέφει ένα Map.Entry της μορφής {x -> West} σε περίπτωση που
+        //  καταφέρει να κάνει την ενοποίηση με τον προς απόδειξη τύπο
+        HashMap<String, String> unifiedMap = hornClauses.fol_fc_ask();
         
-        if (KB == null) return;
-
-        System.out.print("Type the expression you want to prove: ");
-        userInferred = input.next();
-
-        if (userInferred.startsWith("~")) {
-            a = new Literal(userInferred.substring(1), true);
-        } else {
-            a = new Literal(userInferred, false);
+        if (unifiedMap != null) {
+            System.out.println("Unify Done!");
+            for (String param : a.getParams()) {
+                System.out.print("x"+"->"+unifiedMap.get("x1"));
+            }
+            System.out.println();
         }
-
-        System.out.println("***Performing Horn Forward Chaining...***\n");
-        HornMain horn = new HornMain(KB, a);
-        horn.PL_FC_Entails(false);
-
-        //KB.print();    
+        else {
+            System.out.println("Could not find unifier for your expression!");
+        }
         System.out.println();
     }
 
     public static void main(String[] args) {
 
         while (userChoice != 0) {
-            System.out.println("**Main Menu**");
+            System.out.println("***********Main Menu**********");
             showMenuItems();
 
             userChoice = input.nextInt();

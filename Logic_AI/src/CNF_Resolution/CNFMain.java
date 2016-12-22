@@ -95,8 +95,9 @@ public class CNFMain {
                                 System.out.println("Empty subclause!!!");
                                 System.out.println("----------------------------------");
                             }
-                            else
-                                System.out.println("Empty subclause!!!");
+                            else {
+                                System.out.println("Empty subclause produced, TRUE!");
+                            }
 
                             return true;
                         }
